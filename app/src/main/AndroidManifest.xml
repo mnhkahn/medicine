@@ -31,6 +31,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.MedicineHistoryActivity"
+            android:label="服药历史"/>
 
         <!-- 闹钟唤醒广播 -->
         <receiver

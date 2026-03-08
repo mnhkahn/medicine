@@ -29,9 +29,8 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
-    private val TAG = "AlarmReceiver_TAG"
-    // 权限请求码
     private val PERMISSION_REQUEST_CODE = 1001
+    private val TAG = "MainActivity_TAG"
 
     private val db by lazy { MedicineDatabase.getDatabase(this) }
     private lateinit var viewModel: MedicineViewModel
@@ -39,14 +38,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.e(TAG, "===== MainActivity 开始启动 =====")
         setContentView(R.layout.activity_main)
 
-        // 1. 启动时申请必须的权限
-//        checkAndRequestPermissions()
-        // 2. 引导用户关闭电池优化
-//        requestIgnoreBatteryOptimization()
+        checkAndRequestPermissions()
+        requestIgnoreBatteryOptimization()
 
-        // 初始化列表
         val rv = findViewById<RecyclerView>(R.id.recyclerView)
         val fab = findViewById<FloatingActionButton>(R.id.fab)
 
@@ -56,23 +53,32 @@ class MainActivity : AppCompatActivity() {
         rv.adapter = adapter
         rv.layoutManager = LinearLayoutManager(this)
 
-        // 初始化ViewModel
-        viewModel = ViewModelProvider(this)[MedicineViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            MedicineViewModelFactory(db)
+        )[MedicineViewModel::class.java]
+
         viewModel.medicines.observe(this) {
             adapter.submitList(it)
         }
 
-        // 新增药品按钮
+        // 绑定历史记录按钮
+        val btnHistory = findViewById<Button>(R.id.btn_history)
+        btnHistory.setOnClickListener {
+            // 跳转到服药历史页面
+            startActivity(Intent(this, MedicineHistoryActivity::class.java))
+        }
+
         fab.setOnClickListener {
             showAddMedicineDialog()
         }
+
+        Log.i(TAG, "===== MainActivity 启动完成 =====")
     }
 
-    // 权限检查与申请
     private fun checkAndRequestPermissions() {
         val permissionsToRequest = mutableListOf<String>()
 
-        // Android 13+ 通知权限
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
                 != PackageManager.PERMISSION_GRANTED
@@ -81,7 +87,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Android 12+ 精确闹钟权限
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val alarmManager = getSystemService(ALARM_SERVICE) as android.app.AlarmManager
             if (!alarmManager.canScheduleExactAlarms()) {
@@ -89,25 +94,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // 申请权限
         if (permissionsToRequest.isNotEmpty()) {
             ActivityCompat.requestPermissions(this, permissionsToRequest.toTypedArray(), PERMISSION_REQUEST_CODE)
         }
     }
 
-    // 引导用户关闭电池优化
     private fun requestIgnoreBatteryOptimization() {
-        Log.i(TAG,"requestIgnoreBatteryOptimization")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Log.i(TAG,"111")
-
-            // 1. 先强转为 PowerManager 类型
             val powerManager = getSystemService(POWER_SERVICE) as android.os.PowerManager
             val packageName = packageName
 
-            // 2. 检查是否已忽略电池优化
             if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
-                // 3. 引导用户去设置页面关闭电池优化
                 val intent = Intent().apply {
                     action = android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
                     data = android.net.Uri.parse("package:$packageName")
@@ -115,10 +112,8 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-        Log.i(TAG,"222")
     }
 
-    // 新增药品弹窗
     private fun showAddMedicineDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_add, null)
         val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
@@ -134,7 +129,6 @@ class MainActivity : AppCompatActivity() {
         var selectedHour = 8
         var selectedMinute = 0
 
-        // 选择时间
         btnTime.setOnClickListener {
             val cal = Calendar.getInstance()
             TimePickerDialog(this, { _, h, m ->
@@ -144,7 +138,6 @@ class MainActivity : AppCompatActivity() {
             }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
         }
 
-        // 保存药品
         btnSave.setOnClickListener {
             val name = etName.text.toString().trim()
             val dosage = etDosage.text.toString().trim()
@@ -161,9 +154,7 @@ class MainActivity : AppCompatActivity() {
                     timeHour = selectedHour,
                     timeMinute = selectedMinute
                 )
-                // 插入数据库
                 val medId = db.medicineDao().insert(medicine)
-                // 设置每日闹钟
                 AlarmHelper.setDailyAlarm(this@MainActivity, medicine.copy(id = medId.toInt()))
             }
 
@@ -174,18 +165,14 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    // 删除药品
     private fun deleteMedicine(medicine: Medicine) {
         CoroutineScope(Dispatchers.IO).launch {
-            // 删除数据库数据
             db.medicineDao().delete(medicine)
-            // 取消对应的闹钟
             AlarmHelper.cancelAlarm(this@MainActivity, medicine.id)
         }
         Toast.makeText(this, "药品已删除", Toast.LENGTH_SHORT).show()
     }
 
-    // 权限申请结果回调
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -194,11 +181,29 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSION_REQUEST_CODE) {
             grantResults.forEachIndexed { index, result ->
-                if (result != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "权限${permissions[index]}被拒绝，可能无法收到提醒", Toast.LENGTH_LONG).show()
+                val permission = permissions[index]
+                if (result == PackageManager.PERMISSION_GRANTED) {
+                    Log.i(TAG, "权限申请成功：$permission")
+                } else {
+                    Log.e(TAG, "权限申请被拒绝：$permission（可能导致提醒功能失效）")
                 }
             }
         }
+    }
+
+    // 显示右上角菜单
+    override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    // 点击菜单跳转历史页面
+    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
+        if (item.itemId == R.id.menu_history) {
+            startActivity(android.content.Intent(this, MedicineHistoryActivity::class.java))
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
 
@@ -207,6 +212,7 @@ class MedicineViewModel(private val db: MedicineDatabase) : ViewModel() {
     val medicines = db.medicineDao().getAllMedicines()
 }
 
+// ViewModelFactory
 class MedicineViewModelFactory(private val db: MedicineDatabase) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MedicineViewModel::class.java)) {
@@ -216,3 +222,4 @@ class MedicineViewModelFactory(private val db: MedicineDatabase) : ViewModelProv
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
+
