@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 定义 AndroidManifest 中引用的 Theme.Medicine 主题 -->
+    <style name="Theme.Medicine" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- 基础主题配置 -->
+        <item name="colorPrimary">@android:color/holo_blue_dark</item>
+        <item name="colorPrimaryVariant">@android:color/holo_blue_light</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorAccent">@android:color/holo_green_light</item>
+    </style>
+</resources>
