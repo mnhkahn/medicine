@@ -5,24 +5,28 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-// 核心：entities = [Medicine::class] 必须包含实体类，version 必须是整数
-@Database(entities = [Medicine::class], version = 1, exportSchema = false)
+@Database(
+    entities = [Medicine::class, MedicineRecord::class], // 新增历史记录表
+    version = 2, // 版本升级
+    exportSchema = false
+)
 abstract class MedicineDatabase : RoomDatabase() {
-    // 关联 Dao 接口
     abstract fun medicineDao(): MedicineDao
+    abstract fun recordDao(): RecordDao // 新增历史记录Dao
 
     companion object {
         @Volatile
         private var INSTANCE: MedicineDatabase? = null
 
-        fun getInstance(context: Context): MedicineDatabase {
+        fun getDatabase(context: Context): MedicineDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     MedicineDatabase::class.java,
-                    "medicine_db" // 数据库文件名
+                    "medicine_db"
                 )
-                    .fallbackToDestructiveMigration() // 版本升级时清空数据（测试用）
+                    .fallbackToDestructiveMigration() // 版本升级自动重建表
+                    .allowMainThreadQueries() // 临时允许主线程操作（新手友好）
                     .build()
                 INSTANCE = instance
                 instance
