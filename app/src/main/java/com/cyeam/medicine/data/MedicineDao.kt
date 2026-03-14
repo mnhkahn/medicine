@@ -8,15 +8,22 @@ import androidx.room.Query
 
 @Dao
 interface MedicineDao {
-    // 查询所有药品（LiveData 自动更新，无需 suspend）
+    // 原有：给UI用的LiveData查询
     @Query("SELECT * FROM medicines ORDER BY timeHour, timeMinute")
     fun getAllMedicines(): LiveData<List<Medicine>>
 
-    // 插入：Room 原生支持返回 Long（主键ID），去掉 suspend
+    // 新增：给后台用的同步查询（核心！广播里用这个拿数据）
+    @Query("SELECT * FROM medicines ORDER BY timeHour, timeMinute")
+    fun getAllMedicinesSync(): List<Medicine>
+
+    // 新增：根据ID查询单个药品（续期闹钟用）
+    @Query("SELECT * FROM medicines WHERE id = :medId LIMIT 1")
+    fun getMedicineById(medId: Int): Medicine?
+
+    // 原有插入/删除方法
     @Insert
     fun insert(medicine: Medicine): Long
 
-    // 删除：Room 原生支持返回 Int（删除行数），去掉 suspend
     @Delete
     fun delete(medicine: Medicine): Int
 }
