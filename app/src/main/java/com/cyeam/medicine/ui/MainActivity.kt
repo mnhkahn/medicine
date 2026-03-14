@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity() {
             showAddMedicineDialog()
         }
 
+        AlarmHelper.initAllAlarms(this)
         Log.i(TAG, "===== MainActivity 启动完成 =====")
     }
 
@@ -155,7 +156,8 @@ class MainActivity : AppCompatActivity() {
                     timeMinute = selectedMinute
                 )
                 val medId = db.medicineDao().insert(medicine)
-                AlarmHelper.setDailyAlarm(this@MainActivity, medicine.copy(id = medId.toInt()))
+                val newMedicine = medicine.copy(id = medId.toInt())
+                AlarmHelper.setDailyAlarm(this@MainActivity, newMedicine)
             }
 
             dialog.dismiss()

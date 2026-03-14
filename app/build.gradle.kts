@@ -1,3 +1,7 @@
+// 1. 补充缺失的导入（核心修复点）
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -16,15 +20,45 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["room.schemaLocation"] = "$projectDir/schemas"
+            }
+        }
     }
 
+    // 2. 简化Properties引用（核心修复点：去掉java.util.前缀）
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        // 3. 简化FileInputStream引用（核心修复点：去掉java.io.前缀）
+        localProperties.load(FileInputStream(localPropertiesFile))
+    }
+    val storeFile = localProperties.getProperty("signing.storeFile")
+    val storePassword = localProperties.getProperty("signing.storePassword")
+    val keyAlias = localProperties.getProperty("signing.keyAlias")
+    val keyPassword = localProperties.getProperty("signing.keyPassword")
+
+    signingConfigs {
+        create("release") {
+            storeFile?.let { this.storeFile = file(it) }
+            storePassword?.let { this.storePassword = it }
+            keyAlias?.let { this.keyAlias = it }
+            keyPassword?.let { this.keyPassword = it }
+        }
+    }
+
+    // 4. 修正buildTypes语法（Kotlin DSL规范）
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // 补充：绑定签名配置（否则release包不会用自定义签名）
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
