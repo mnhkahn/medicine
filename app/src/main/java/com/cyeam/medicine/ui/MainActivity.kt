@@ -3,10 +3,8 @@ package com.cyeam.medicine.ui
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -18,6 +16,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.baidu.mobstat.StatService
 import com.cyeam.medicine.R
 import com.cyeam.medicine.data.Medicine
 import com.cyeam.medicine.data.MedicineDatabase
@@ -74,6 +73,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         AlarmHelper.initAllAlarms(this)
+
+        StatService.setDebugOn(true);
+        // 启动统计
+        StatService.autoTrace(this);
         Log.i(TAG, "===== MainActivity 启动完成 =====")
     }
 
@@ -206,6 +209,17 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    // 务必添加页面统计
+    override fun onResume() {
+        super.onResume()
+        StatService.onResume(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        StatService.onPause(this)
     }
 }
 

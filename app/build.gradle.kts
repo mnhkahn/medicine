@@ -12,6 +12,19 @@ android {
     namespace = "com.cyeam.medicine"
     compileSdk = 34
 
+    // 2. 简化Properties引用（核心修复点：去掉java.util.前缀）
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        // 3. 简化FileInputStream引用（核心修复点：去掉java.io.前缀）
+        localProperties.load(FileInputStream(localPropertiesFile))
+    }
+    val storeFile = localProperties.getProperty("signing.storeFile")
+    val storePassword = localProperties.getProperty("signing.storePassword")
+    val keyAlias = localProperties.getProperty("signing.keyAlias")
+    val keyPassword = localProperties.getProperty("signing.keyPassword")
+    var baiduMTJKey = localProperties.getProperty("baidu.mtj.app.key")
+
     defaultConfig {
         applicationId = "com.cyeam.medicine"
         minSdk = 26
@@ -26,19 +39,9 @@ android {
                 arguments["room.schemaLocation"] = "$projectDir/schemas"
             }
         }
-    }
 
-    // 2. 简化Properties引用（核心修复点：去掉java.util.前缀）
-    val localProperties = Properties()
-    val localPropertiesFile = rootProject.file("local.properties")
-    if (localPropertiesFile.exists()) {
-        // 3. 简化FileInputStream引用（核心修复点：去掉java.io.前缀）
-        localProperties.load(FileInputStream(localPropertiesFile))
+        manifestPlaceholders["BAIDU_MTJ_APP_KEY"] = baiduMTJKey
     }
-    val storeFile = localProperties.getProperty("signing.storeFile")
-    val storePassword = localProperties.getProperty("signing.storePassword")
-    val keyAlias = localProperties.getProperty("signing.keyAlias")
-    val keyPassword = localProperties.getProperty("signing.keyPassword")
 
     signingConfigs {
         create("release") {
@@ -83,6 +86,7 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.8.2")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation(files("libs/Baidu_Mtj_android_4.0.11.0.jar"))
 
     // Room 数据库
     val roomVersion = "2.4.0"
