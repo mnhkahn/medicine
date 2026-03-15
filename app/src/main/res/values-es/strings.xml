@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">No dejar de tomar la medicina</string>
+    <string name="add_item_name_hint">Nombre del medicamento (ej: Baijiahei)</string>
+    <string name="add_item_count_hit">Dosis (ej: 1 tableta por toma)</string>
+    <string name="add_item_select_time">Seleccionar hora: 08:00</string>
+    <string name="save">Guardar</string>
+    <string name="main_view_history">Ver historial de toma de medicamentos</string>
+    <string name="item_name">Nombre del medicamento</string>
+    <string name="item_count">Dosis</string>
+    <string name="need_have_medicine">Es hora de tomar la medicina</string>
+    <string name="had_medicine">✅Tomado</string>
+    <string name="remind_latar">⏰Recordatorio en 15 minutos</string>
+</resources>

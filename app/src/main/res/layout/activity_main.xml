@@ -16,7 +16,7 @@
         android:id="@+id/btn_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="查看服药历史"
+        android:text="@string/main_view_history"
         android:layout_margin="8dp"/>
 
     <!-- 原有FAB（如果有） -->

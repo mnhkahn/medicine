@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">お薬忘れずに</string>
+    <string name="add_item_name_hint">薬品名（例：白加黒）</string>
+    <string name="add_item_count_hit">服用量（例：1回1錠）</string>
+    <string name="add_item_select_time">時間選択: 08:00</string>
+    <string name="save">保存</string>
+    <string name="main_view_history">服用履歴を見る</string>
+    <string name="item_name">薬品名</string>
+    <string name="item_count">服用量</string>
+    <string name="need_have_medicine">お薬の時間です</string>
+    <string name="had_medicine">✅服用済み</string>
+    <string name="remind_latar">⏰15分後にリマインド</string>
+</resources>

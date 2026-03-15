@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pill Reminder</string>
+    <string name="add_item_name_hint">Medicine Name (e.g. Tylenol)</string>
+    <string name="add_item_count_hit">Dosage (e.g. 1 tablet per dose)</string>
+    <string name="add_item_select_time">Select Time: 08:00</string>
+    <string name="save">Save</string>
+    <string name="main_view_history">View Medication History</string>
+    <string name="item_name">Medicine Name</string>
+    <string name="item_count">Dosage</string>
+    <string name="need_have_medicine">Time to take your medicine</string>
+    <string name="had_medicine">✅ Taken</string>
+    <string name="remind_latar">⏰ Remind me in 15 minutes</string>
+</resources>

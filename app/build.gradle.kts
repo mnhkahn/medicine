@@ -32,6 +32,10 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        androidResources {
+            generateLocaleConfig = true
+        }
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {

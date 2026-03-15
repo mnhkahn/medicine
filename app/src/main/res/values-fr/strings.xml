@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ne pas oublier ses pilules</string>
+    <string name="add_item_name_hint">Nom du médicament (ex: Baijiahei)</string>
+    <string name="add_item_count_hit">Dose (ex: 1 comprimé chaque fois)</string>
+    <string name="add_item_select_time">Choisir l\'heure : 08:00</string>
+    <string name="save">Enregistrer</string>
+    <string name="main_view_history">Voir l\'historique des prises</string>
+    <string name="item_name">Nom du médicament</string>
+    <string name="item_count">Dose</string>
+    <string name="need_have_medicine">Il est temps de prendre votre médicament</string>
+    <string name="had_medicine">✅ Pris</string>
+    <string name="remind_latar">⏰ Rappel dans 15 minutes</string>
+</resources>

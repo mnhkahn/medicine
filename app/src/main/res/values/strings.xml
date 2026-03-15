@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">药不能停</string>
+    <string name="add_item_name_hint">药品名称（如：白加黑）</string>
+    <string name="add_item_count_hit">剂量（如：每次一片）</string>
+    <string name="add_item_select_time">选择时间: 08:00</string>
+    <string name="save">保存</string>
+    <string name="main_view_history">查看服药历史</string>
+    <string name="item_name">药品名</string>
+    <string name="item_count">剂量</string>
+    <string name="need_have_medicine">该吃药了</string>
+    <string name="had_medicine">✅已服药</string>
+    <string name="remind_latar">⏰15分钟后提醒</string>
 </resources>

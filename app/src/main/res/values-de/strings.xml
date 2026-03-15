@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Medikamente nicht vergessen</string>
+    <string name="add_item_name_hint">Medikamentenname (z.B. Baijiahei)</string>
+    <string name="add_item_count_hit">Dosis (z.B. 1 Tablette pro Einnahme)</string>
+    <string name="add_item_select_time">Zeit auswählen: 08:00</string>
+    <string name="save">Speichern</string>
+    <string name="main_view_history">Einnahmeverlauf anzeigen</string>
+    <string name="item_name">Medikamentenname</string>
+    <string name="item_count">Dosis</string>
+    <string name="need_have_medicine">Es ist Zeit, das Medikament einzunehmen</string>
+    <string name="had_medicine">✅Eingenommen</string>
+    <string name="remind_latar">⏰Erinnerung in 15 Minuten</string>
+</resources>

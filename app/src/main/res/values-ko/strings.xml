@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">약 잊지 마세요</string>
+    <string name="add_item_name_hint">약품 이름 (예: 백가흑)</string>
+    <string name="add_item_count_hit">복용량 (예: 1회 1정)</string>
+    <string name="add_item_select_time">시간 선택: 08:00</string>
+    <string name="save">저장</string>
+    <string name="main_view_history">복용 기록 보기</string>
+    <string name="item_name">약품 이름</string>
+    <string name="item_count">복용량</string>
+    <string name="need_have_medicine">약 복용할 시간입니다</string>
+    <string name="had_medicine">✅복용 완료</string>
+    <string name="remind_latar">⏰15분 후 알림</string>
+</resources>
