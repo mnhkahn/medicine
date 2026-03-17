@@ -30,7 +30,8 @@ class MedicineAdapter(
     override fun onBindViewHolder(holder: MedicineViewHolder, position: Int) {
         val medicine = getItem(position)
         holder.tvName.text = medicine.name
-        holder.tvDosage.text = "剂量: ${medicine.dosage}"
+        val dosageLabel = holder.itemView.context.getString(R.string.item_count)
+        holder.tvDosage.text = "$dosageLabel: ${medicine.dosage}"
         holder.tvTime.text = String.format("%02d:%02d", medicine.timeHour, medicine.timeMinute)
         holder.btnDelete.setOnClickListener { onDeleteClick(medicine) }
     }
