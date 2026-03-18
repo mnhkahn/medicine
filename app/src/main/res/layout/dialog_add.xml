@@ -16,14 +16,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/add_item_count_hit"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnStartDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/select_start_date"
+        android:layout_marginTop="16dp" />
 
     <Button
         android:id="@+id/btnTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_item_select_time"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/btnCycleType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reminder_period_text"
+        android:layout_marginTop="16dp" />
 
     <Button
         android:id="@+id/btnSave"
@@ -31,6 +45,6 @@
         android:layout_height="wrap_content"
         android:text="@string/save"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@android:color/holo_blue_dark"/>
+        android:backgroundTint="@android:color/holo_blue_dark" />
 
 </LinearLayout>

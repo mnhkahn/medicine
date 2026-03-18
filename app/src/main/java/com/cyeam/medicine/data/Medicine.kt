@@ -9,5 +9,7 @@ data class Medicine(
     val name: String,        // 药品名
     val dosage: String,      // 剂量
     val timeHour: Int,       // 提醒小时
-    val timeMinute: Int      // 提醒分钟
+    val timeMinute: Int,     // 提醒分钟
+    val startDate: Long = 1741872000000, // 开始时间，默认2025年3月13日
+    val cycleType: CycleType = CycleType.DAILY // 周期类型，默认每天
 )

@@ -1,5 +1,6 @@
 package com.cyeam.medicine.ui
 
+import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.baidu.mobstat.StatService
 import com.cyeam.medicine.R
+import com.cyeam.medicine.data.CycleType
 import com.cyeam.medicine.data.Medicine
 import com.cyeam.medicine.data.MedicineDatabase
 import com.cyeam.medicine.helper.AlarmHelper
@@ -26,6 +28,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Calendar
+import java.util.Date
 
 class MainActivity : AppCompatActivity() {
     private val PERMISSION_REQUEST_CODE = 1001
@@ -128,11 +131,21 @@ class MainActivity : AppCompatActivity() {
         val etName = dialogView.findViewById<EditText>(R.id.etName)
         val etDosage = dialogView.findViewById<EditText>(R.id.etDosage)
         val btnTime = dialogView.findViewById<Button>(R.id.btnTime)
+        val btnStartDate = dialogView.findViewById<Button>(R.id.btnStartDate)
+        val btnCycleType = dialogView.findViewById<Button>(R.id.btnCycleType)
         val btnSave = dialogView.findViewById<Button>(R.id.btnSave)
 
         var selectedHour = 8
         var selectedMinute = 0
+        var selectedStartDate = Calendar.getInstance().timeInMillis // 默认今天
+        var selectedCycleType = CycleType.DAILY // 默认每天
+        
+        // 初始化按钮文本（使用多语言）
+        val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+        btnStartDate.text = getString(R.string.select_start_date) + ": " + sdf.format(Date(selectedStartDate))
+        btnCycleType.text = getString(R.string.reminder_period_text) + getString(R.string.cycle_daily)
 
+        // 时间选择
         btnTime.setOnClickListener {
             val cal = Calendar.getInstance()
             TimePickerDialog(this, { _, h, m ->
@@ -140,6 +153,51 @@ class MainActivity : AppCompatActivity() {
                 selectedMinute = m
                 btnTime.text = String.format("%02d:%02d", h, m)
             }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
+        }
+
+        // 开始日期选择
+        btnStartDate.setOnClickListener {
+            val cal = Calendar.getInstance()
+            cal.timeInMillis = selectedStartDate
+            DatePickerDialog(
+                this,
+                DatePickerDialog.OnDateSetListener {
+                    _, year, month, dayOfMonth ->
+                    val selectedCal = Calendar.getInstance()
+                    selectedCal.set(year, month, dayOfMonth, 0, 0, 0)
+                    selectedCal.set(Calendar.MILLISECOND, 0)
+                    selectedStartDate = selectedCal.timeInMillis
+                    
+                    val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+                    btnStartDate.text = getString(R.string.select_start_date) + ": " + sdf.format(Date(selectedStartDate))
+                },
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+
+        // 周期类型选择
+        btnCycleType.setOnClickListener {
+            val items = arrayOf(
+                getString(R.string.cycle_daily),
+                getString(R.string.cycle_weekly),
+                getString(R.string.cycle_monthly),
+                getString(R.string.cycle_yearly)
+            )
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle(getString(R.string.title_select_cycle))
+                .setItems(items) { _, which ->
+                    selectedCycleType = when (which) {
+                        0 -> CycleType.DAILY
+                        1 -> CycleType.WEEKLY
+                        2 -> CycleType.MONTHLY
+                        3 -> CycleType.YEARLY
+                        else -> CycleType.DAILY
+                    }
+                    btnCycleType.text = getString(R.string.reminder_period_text) + items[which]
+                }
+                .show()
         }
 
         btnSave.setOnClickListener {
@@ -156,7 +214,9 @@ class MainActivity : AppCompatActivity() {
                     name = name,
                     dosage = dosage,
                     timeHour = selectedHour,
-                    timeMinute = selectedMinute
+                    timeMinute = selectedMinute,
+                    startDate = selectedStartDate,
+                    cycleType = selectedCycleType
                 )
                 val medId = db.medicineDao().insert(medicine)
                 val newMedicine = medicine.copy(id = medId.toInt())
