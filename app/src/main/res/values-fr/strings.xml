@@ -11,4 +11,38 @@
     <string name="need_have_medicine">Il est temps de prendre votre médicament</string>
     <string name="had_medicine">✅ Pris</string>
     <string name="remind_latar">⏰ Rappel dans 15 minutes</string>
+    <string name="reminder_period_text">Intervalle de rappel :</string>
+    <string name="time_label">Heure</string>
+
+    <!-- Dialogue/Bouton -->
+    <string name="btn_confirm">Confirmer</string>
+    <string name="btn_cancel">Annuler</string>
+    <string name="unit_day">1 jour(s)</string>
+    <string name="title_select_cycle">Sélectionner l\'intervalle de rappel</string>
+    <string name="select_start_date">Sélectionner la date de début</string>
+
+    <!-- Type de cycle -->
+    <string name="cycle_daily">Quotidien</string>
+    <string name="cycle_weekly">Hebdomadaire</string>
+    <string name="cycle_monthly">Mensuel</string>
+    <string name="cycle_yearly">Annuel</string>
+    <string name="cycle_default">Quotidien</string>
+
+    <!-- Log -->
+    <string name="log_main_start">===== MainActivity démarrage =====</string>
+    <string name="log_main_complete">===== MainActivity démarrage terminé =====</string>
+    <string name="log_permission_grant">Permission accordée: %s</string>
+    <string name="log_permission_deny">Permission refusée: %s (La fonction de rappel peut ne pas fonctionner)</string>
+
+    <!-- Toast -->
+    <string name="toast_input_medicine_name">Veuillez entrer le nom du médicament</string>
+    <string name="toast_medicine_add_success">Médicament ajouté avec succès, rappel configuré</string>
+    <string name="toast_medicine_delete_success">Médicament supprimé</string>
+
+    <!-- Erreur -->
+    <string name="error_unknown_viewmodel">Classe ViewModel inconnue</string>
+
+    <!-- Historique des médicaments -->
+    <string name="history_status_taken">Pris</string>
+    <string name="history_status_not_taken">Non pris</string>
 </resources>

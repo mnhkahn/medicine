@@ -11,4 +11,37 @@
     <string name="need_have_medicine">Es ist Zeit, das Medikament einzunehmen</string>
     <string name="had_medicine">✅Eingenommen</string>
     <string name="remind_latar">⏰Erinnerung in 15 Minuten</string>
+    <string name="reminder_period_text">Erinnerungsintervall：</string>
+    <string name="time_label">Zeit</string>
+
+    <!-- Dialog/Button -->
+    <string name="btn_cancel">Abbrechen</string>
+    <string name="unit_day">1 Tag(e)</string>
+    <string name="btn_confirm">OK</string>
+    <string name="title_select_cycle">Erinnerungsintervall wählen</string>
+    <string name="select_start_date">Startdatum auswählen</string>
+
+    <!-- 周期类型 -->
+    <string name="cycle_daily">Täglich</string>
+    <string name="cycle_weekly">Wöchentlich</string>
+    <string name="cycle_monthly">Monatlich</string>
+    <string name="cycle_yearly">Jährlich</string>
+    <string name="cycle_default">Täglich</string>
+
+    <string name="log_main_start">===== MainActivity startet =====</string>
+    <string name="log_main_complete">===== MainActivity erfolgreich gestartet =====</string>
+    <string name="log_permission_grant">Berechtigung erteilt: %s</string>
+    <string name="log_permission_deny">Berechtigung verweigert: %s (Erinnerungsfunktion funktioniert möglicherweise nicht)</string>
+
+    <!-- Toast -->
+    <string name="toast_input_medicine_name">Bitte Medikamentennamen eingeben</string>
+    <string name="toast_medicine_add_success">Medikament hinzugefügt, Erinnerung gesetzt</string>
+    <string name="toast_medicine_delete_success">Medikament gelöscht</string>
+
+    <!-- Error -->
+    <string name="error_unknown_viewmodel">Unbekannte ViewModel-Klasse</string>
+
+    <!-- Einnahmeverlauf -->
+    <string name="history_status_taken">Eingenommen</string>
+    <string name="history_status_not_taken">Nicht eingenommen</string>
 </resources>

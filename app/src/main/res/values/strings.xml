@@ -10,4 +10,36 @@
     <string name="need_have_medicine">该吃药了</string>
     <string name="had_medicine">✅已服药</string>
     <string name="remind_latar">⏰15分钟后提醒</string>
+    <string name="reminder_period_text">提醒周期：</string>
+    <string name="time_label">时间</string>
+    <!-- 弹窗/按钮文本 -->
+    <string name="btn_confirm">确定</string>
+    <string name="btn_cancel">取消</string>
+    <string name="unit_day">1天</string>
+    <string name="title_select_cycle">选择提醒周期</string>
+    <string name="select_start_date">选择开始日期</string>
+
+    <!-- 周期类型 -->
+    <string name="cycle_daily">每天</string>
+    <string name="cycle_weekly">每周</string>
+    <string name="cycle_monthly">每月</string>
+    <string name="cycle_yearly">每年</string>
+    <string name="cycle_default">每天</string>
+
+    <string name="log_main_start">===== MainActivity 开始启动 =====</string>
+    <string name="log_main_complete">===== MainActivity 启动完成 =====</string>
+    <string name="log_permission_grant">权限申请成功：%s</string>
+    <string name="log_permission_deny">权限申请被拒绝：%s（可能导致提醒功能失效）</string>
+
+    <!-- Toast提示 -->
+    <string name="toast_input_medicine_name">请输入药品名称</string>
+    <string name="toast_medicine_add_success">药品添加成功，提醒已设置</string>
+    <string name="toast_medicine_delete_success">药品已删除</string>
+
+    <!-- 错误提示 -->
+    <string name="error_unknown_viewmodel">Unknown ViewModel class</string>
+
+    <!-- 服药历史 -->
+    <string name="history_status_taken">已服药</string>
+    <string name="history_status_not_taken">未服药</string>
 </resources>

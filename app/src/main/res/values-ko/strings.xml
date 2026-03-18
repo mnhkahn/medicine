@@ -11,4 +11,38 @@
     <string name="need_have_medicine">약 복용할 시간입니다</string>
     <string name="had_medicine">✅복용 완료</string>
     <string name="remind_latar">⏰15분 후 알림</string>
+    <string name="reminder_period_text">알림 주기:</string>
+    <string name="time_label">시간</string>
+
+    <!-- 다이얼로그/버튼 -->
+    <string name="btn_confirm">확인</string>
+    <string name="btn_cancel">취소</string>
+    <string name="unit_day">일</string>
+    <string name="title_select_cycle">알림 주기 선택</string>
+    <string name="select_start_date">시작 날짜 선택</string>
+
+    <!-- 주기 타입 -->
+    <string name="cycle_daily">매일</string>
+    <string name="cycle_weekly">매주</string>
+    <string name="cycle_monthly">매월</string>
+    <string name="cycle_yearly">매년</string>
+    <string name="cycle_default">매일</string>
+
+    <!-- 로그 -->
+    <string name="log_main_start">===== MainActivity 시작 =====</string>
+    <string name="log_main_complete">===== MainActivity 시작 완료 =====</string>
+    <string name="log_permission_grant">권한 요청 성공：%s</string>
+    <string name="log_permission_deny">권한 요청 거부：%s（알림 기능이 정상 작동하지 않을 수 있습니다）</string>
+
+    <!-- Toast提示 -->
+    <string name="toast_input_medicine_name">약 이름을 입력해주세요</string>
+    <string name="toast_medicine_add_success">약이 성공적으로 추가되었습니다, 알림이 설정되었습니다</string>
+    <string name="toast_medicine_delete_success">약이 삭제되었습니다</string>
+
+    <!-- 에러提示 -->
+    <string name="error_unknown_viewmodel">알 수 없는 ViewModel 클래스</string>
+
+    <!-- 복용 기록 -->
+    <string name="history_status_taken">복용 완료</string>
+    <string name="history_status_not_taken">복용하지 않음</string>
 </resources>

@@ -11,4 +11,37 @@
     <string name="need_have_medicine">Es hora de tomar la medicina</string>
     <string name="had_medicine">✅Tomado</string>
     <string name="remind_latar">⏰Recordatorio en 15 minutos</string>
+    <string name="reminder_period_text">Intervalo de recordatorio:</string>
+    <string name="time_label">Hora</string>
+    <!-- Diálogo/Botón -->
+    <string name="btn_confirm">Confirmar</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="unit_day">día(s)</string>
+    <string name="title_select_cycle">Seleccionar intervalo de recordatorio</string>
+    <string name="select_start_date">Seleccionar fecha de inicio</string>
+
+    <!-- Tipo de ciclo -->
+    <string name="cycle_daily">Diario</string>
+    <string name="cycle_weekly">Semanal</string>
+    <string name="cycle_monthly">Mensual</string>
+    <string name="cycle_yearly">Anual</string>
+    <string name="cycle_default">Diario</string>
+
+    <!-- Log -->
+    <string name="log_main_start">===== MainActivity iniciando =====</string>
+    <string name="log_main_complete">===== MainActivity iniciado correctamente =====</string>
+    <string name="log_permission_grant">Permiso concedido: %s</string>
+    <string name="log_permission_deny">Permiso denegado: %s (La función de recordatorio puede no funcionar)</string>
+
+    <!-- Toast -->
+    <string name="toast_input_medicine_name">Por favor ingrese el nombre del medicamento</string>
+    <string name="toast_medicine_add_success">Medicamento agregado exitosamente, recordatorio configurado</string>
+    <string name="toast_medicine_delete_success">Medicamento eliminado</string>
+
+    <!-- Error -->
+    <string name="error_unknown_viewmodel">Clase ViewModel desconocida</string>
+
+    <!-- Historial de medicamentos -->
+    <string name="history_status_taken">Tomado</string>
+    <string name="history_status_not_taken">No tomado</string>
 </resources>
