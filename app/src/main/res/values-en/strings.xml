@@ -6,6 +6,7 @@
     <string name="add_item_select_time">Select Time: 08:00</string>
     <string name="save">Save</string>
     <string name="main_view_history">View Medication History</string>
+    <string name="main_view_future_reminders">View Future Reminders</string>
     <string name="item_name">Medicine Name</string>
     <string name="item_count">Dosage</string>
     <string name="need_have_medicine">Time to take your medicine</string>
@@ -37,6 +38,11 @@
     <string name="toast_input_medicine_name">Please enter medicine name</string>
     <string name="toast_medicine_add_success">Medicine added successfully, reminder set</string>
     <string name="toast_medicine_delete_success">Medicine deleted</string>
+    <string name="toast_medicine_taken_record_added">Medication record added</string>
+
+    <!-- Medication Confirmation Dialog -->
+    <string name="dialog_title_medicine_confirm">Medication Confirmation</string>
+    <string name="dialog_message_medicine_confirm">Have you taken %1$s (%2$s)?</string>
 
     <!-- Error -->
     <string name="error_unknown_viewmodel">Unknown ViewModel class</string>

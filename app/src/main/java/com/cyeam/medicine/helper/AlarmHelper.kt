@@ -52,41 +52,24 @@ object AlarmHelper {
 
         // 计算闹钟触发时间（考虑开始时间和周期类型）
         val calendar = Calendar.getInstance().apply {
+            // 首先设置为开始日期的提醒时间
+            timeInMillis = medicine.startDate
             set(Calendar.HOUR_OF_DAY, medicine.timeHour)
             set(Calendar.MINUTE, medicine.timeMinute)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
             
-            // 确保不早于开始时间
-            val startCal = Calendar.getInstance()
-            startCal.timeInMillis = medicine.startDate
-            startCal.set(Calendar.HOUR_OF_DAY, 0)
-            startCal.set(Calendar.MINUTE, 0)
-            startCal.set(Calendar.SECOND, 0)
-            startCal.set(Calendar.MILLISECOND, 0)
-            
-            val nowCal = Calendar.getInstance()
-            nowCal.set(Calendar.HOUR_OF_DAY, 0)
-            nowCal.set(Calendar.MINUTE, 0)
-            nowCal.set(Calendar.SECOND, 0)
-            nowCal.set(Calendar.MILLISECOND, 0)
-            
-            // 如果今天早于开始日期，设置为开始日期
-            if (nowCal.before(startCal)) {
-                set(Calendar.YEAR, startCal.get(Calendar.YEAR))
-                set(Calendar.MONTH, startCal.get(Calendar.MONTH))
-                set(Calendar.DAY_OF_MONTH, startCal.get(Calendar.DAY_OF_MONTH))
-            }
-            // 今日时间已过，根据周期类型设置下一次时间
-            else if (before(Calendar.getInstance())) {
+            // 如果提醒时间已过，根据周期类型计算下一次提醒时间
+            val currentTime = System.currentTimeMillis()
+            while (timeInMillis <= currentTime) {
                 when (medicine.cycleType) {
-                    CycleType.DAILY -> add(Calendar.DAY_OF_MONTH, 1)
+                    CycleType.DAILY -> add(Calendar.DAY_OF_YEAR, 1)
                     CycleType.WEEKLY -> add(Calendar.WEEK_OF_YEAR, 1)
                     CycleType.MONTHLY -> add(Calendar.MONTH, 1)
                     CycleType.YEARLY -> add(Calendar.YEAR, 1)
                 }
-                Log.i(TAG, "药品${medicine.name}今日时间已过，设置为下次${medicine.timeHour}:${medicine.timeMinute}")
             }
+            Log.i(TAG, "药品${medicine.name}今日时间已过，设置为下次${medicine.timeHour}:${medicine.timeMinute}")
         }
 
         // 适配所有Android版本的精确闹钟，Doze模式下也能唤醒

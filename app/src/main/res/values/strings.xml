@@ -5,6 +5,7 @@
     <string name="add_item_select_time">选择时间: 08:00</string>
     <string name="save">保存</string>
     <string name="main_view_history">查看服药历史</string>
+    <string name="main_view_future_reminders">查看未来提醒</string>
     <string name="item_name">药品名</string>
     <string name="item_count">剂量</string>
     <string name="need_have_medicine">该吃药了</string>
@@ -35,6 +36,11 @@
     <string name="toast_input_medicine_name">请输入药品名称</string>
     <string name="toast_medicine_add_success">药品添加成功，提醒已设置</string>
     <string name="toast_medicine_delete_success">药品已删除</string>
+    <string name="toast_medicine_taken_record_added">服药记录已添加</string>
+
+    <!-- 服药确认对话框 -->
+    <string name="dialog_title_medicine_confirm">服药确认</string>
+    <string name="dialog_message_medicine_confirm">您是否已经服用了 %1$s（%2$s）？</string>
 
     <!-- 错误提示 -->
     <string name="error_unknown_viewmodel">Unknown ViewModel class</string>

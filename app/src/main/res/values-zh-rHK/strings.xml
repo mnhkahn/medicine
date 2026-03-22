@@ -6,6 +6,7 @@
     <string name="add_item_select_time">選擇時間: 08:00</string>
     <string name="save">儲存</string>
     <string name="main_view_history">查看服藥記錄</string>
+    <string name="main_view_future_reminders">查看未來提醒</string>
     <string name="item_name">藥品名</string>
     <string name="item_count">劑量</string>
     <string name="need_have_medicine">係時候食藥啦</string>
@@ -36,6 +37,11 @@
     <string name="toast_input_medicine_name">請輸入藥物名稱</string>
     <string name="toast_medicine_add_success">藥物新增成功，提醒已設定</string>
     <string name="toast_medicine_delete_success">藥物已刪除</string>
+    <string name="toast_medicine_taken_record_added">服藥記錄已添加</string>
+
+    <!-- 服藥確認對話框 -->
+    <string name="dialog_title_medicine_confirm">服藥確認</string>
+    <string name="dialog_message_medicine_confirm">您是否已經服用了 %1$s（%2$s）？</string>
 
     <!-- 錯誤提示 -->
     <string name="error_unknown_viewmodel">未知的ViewModel類別</string>

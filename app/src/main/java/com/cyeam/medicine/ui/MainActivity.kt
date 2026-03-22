@@ -22,6 +22,7 @@ import com.cyeam.medicine.R
 import com.cyeam.medicine.data.CycleType
 import com.cyeam.medicine.data.Medicine
 import com.cyeam.medicine.data.MedicineDatabase
+import com.cyeam.medicine.data.MedicineRecord
 import com.cyeam.medicine.helper.AlarmHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
@@ -50,7 +51,8 @@ class MainActivity : AppCompatActivity() {
         val fab = findViewById<FloatingActionButton>(R.id.fab)
 
         adapter = MedicineAdapter(
-            onDeleteClick = { medicine -> deleteMedicine(medicine) }
+            onDeleteClick = { medicine -> deleteMedicine(medicine) },
+            onItemClick = { medicine -> showMedicineConfirmDialog(medicine) }
         )
         rv.adapter = adapter
         rv.layoutManager = LinearLayoutManager(this)
@@ -69,6 +71,12 @@ class MainActivity : AppCompatActivity() {
         btnHistory.setOnClickListener {
             // 跳转到服药历史页面
             startActivity(Intent(this, MedicineHistoryActivity::class.java))
+        }
+
+        // 绑定未来提醒查询按钮
+        val btnFutureReminders = findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.btn_future_reminders)
+        btnFutureReminders.setOnClickListener {
+            showFutureRemindersDialog()
         }
 
         fab.setOnClickListener {
@@ -236,6 +244,97 @@ class MainActivity : AppCompatActivity() {
             AlarmHelper.cancelAlarm(this@MainActivity, medicine.id)
         }
         Toast.makeText(this, "药品已删除", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showFutureRemindersDialog() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val allMedicines = db.medicineDao().getAllMedicinesSync()
+            val futureReminders = mutableListOf<String>()
+            val currentTime = System.currentTimeMillis()
+
+            for (medicine in allMedicines) {
+                // 计算下一次提醒时间
+                val nextReminderTime = calculateNextReminderTime(medicine, currentTime)
+                if (nextReminderTime > currentTime) {
+                    val sdf = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault())
+                    val reminderTimeStr = sdf.format(Date(nextReminderTime))
+                    val cycleTypeStr = when (medicine.cycleType) {
+                        CycleType.DAILY -> getString(R.string.cycle_daily)
+                        CycleType.WEEKLY -> getString(R.string.cycle_weekly)
+                        CycleType.MONTHLY -> getString(R.string.cycle_monthly)
+                        CycleType.YEARLY -> getString(R.string.cycle_yearly)
+                    }
+                    futureReminders.add("${medicine.name}（${medicine.dosage}）\n下次提醒：$reminderTimeStr\n周期：$cycleTypeStr")
+                }
+            }
+
+            runOnUiThread {
+                val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(this@MainActivity)
+                    .setTitle("未来提醒明细")
+
+                if (futureReminders.isEmpty()) {
+                    dialogBuilder.setMessage("当前没有未来提醒的药品")
+                } else {
+                    val message = futureReminders.joinToString("\n\n")
+                    dialogBuilder.setMessage(message)
+                }
+
+                dialogBuilder.setPositiveButton(getString(R.string.btn_confirm)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+
+                dialogBuilder.show()
+            }
+        }
+    }
+
+    private fun calculateNextReminderTime(medicine: Medicine, currentTime: Long): Long {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = currentTime
+
+        val reminderCalendar = Calendar.getInstance()
+        reminderCalendar.timeInMillis = medicine.startDate
+        reminderCalendar.set(Calendar.HOUR_OF_DAY, medicine.timeHour)
+        reminderCalendar.set(Calendar.MINUTE, medicine.timeMinute)
+        reminderCalendar.set(Calendar.SECOND, 0)
+        reminderCalendar.set(Calendar.MILLISECOND, 0)
+
+        // 如果提醒时间已过，计算下一次提醒时间
+        while (reminderCalendar.timeInMillis <= currentTime) {
+            when (medicine.cycleType) {
+                CycleType.DAILY -> reminderCalendar.add(Calendar.DAY_OF_YEAR, 1)
+                CycleType.WEEKLY -> reminderCalendar.add(Calendar.WEEK_OF_YEAR, 1)
+                CycleType.MONTHLY -> reminderCalendar.add(Calendar.MONTH, 1)
+                CycleType.YEARLY -> reminderCalendar.add(Calendar.YEAR, 1)
+            }
+        }
+
+        return reminderCalendar.timeInMillis
+    }
+
+    private fun showMedicineConfirmDialog(medicine: Medicine) {
+        val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(getString(R.string.dialog_title_medicine_confirm))
+            .setMessage(getString(R.string.dialog_message_medicine_confirm, medicine.name, medicine.dosage))
+            .setPositiveButton(getString(R.string.had_medicine)) { dialog, _ ->
+                // 记录服药历史
+                CoroutineScope(Dispatchers.IO).launch {
+                    val record = MedicineRecord(
+                        medicineId = medicine.id,
+                        medicineName = medicine.name,
+                        takeTime = System.currentTimeMillis(),
+                        isCompleted = true
+                    )
+                    db.recordDao().insertRecord(record)
+                }
+                Toast.makeText(this, getString(R.string.toast_medicine_taken_record_added), Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.btn_cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+
+        dialogBuilder.show()
     }
 
     override fun onRequestPermissionsResult(

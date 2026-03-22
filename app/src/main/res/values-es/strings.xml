@@ -6,6 +6,7 @@
     <string name="add_item_select_time">Seleccionar hora: 08:00</string>
     <string name="save">Guardar</string>
     <string name="main_view_history">Ver historial de toma de medicamentos</string>
+    <string name="main_view_future_reminders">Ver recordatorios futuros</string>
     <string name="item_name">Nombre del medicamento</string>
     <string name="item_count">Dosis</string>
     <string name="need_have_medicine">Es hora de tomar la medicina</string>
@@ -37,6 +38,11 @@
     <string name="toast_input_medicine_name">Por favor ingrese el nombre del medicamento</string>
     <string name="toast_medicine_add_success">Medicamento agregado exitosamente, recordatorio configurado</string>
     <string name="toast_medicine_delete_success">Medicamento eliminado</string>
+    <string name="toast_medicine_taken_record_added">Registro de toma agregado</string>
+
+    <!-- Confirmación de toma -->
+    <string name="dialog_title_medicine_confirm">Confirmación de toma</string>
+    <string name="dialog_message_medicine_confirm">¿Ha tomado %1$s (%2$s)?</string>
 
     <!-- Error -->
     <string name="error_unknown_viewmodel">Clase ViewModel desconocida</string>
