@@ -41,6 +41,11 @@
     <!-- 服药确认对话框 -->
     <string name="dialog_title_medicine_confirm">服药确认</string>
     <string name="dialog_message_medicine_confirm">您是否已经服用了 %1$s（%2$s）？</string>
+    
+    <!-- 未来提醒对话框 -->
+    <string name="dialog_title_future_reminders">未来提醒明细</string>
+    <string name="next_reminder_text">下次提醒：</string>
+    <string name="no_future_reminders">当前没有未来提醒的药品</string>
 
     <!-- 错误提示 -->
     <string name="error_unknown_viewmodel">Unknown ViewModel class</string>

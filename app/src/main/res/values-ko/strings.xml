@@ -44,6 +44,11 @@
     <!-- 복용 확인 다이얼로그 -->
     <string name="dialog_title_medicine_confirm">복용 확인</string>
     <string name="dialog_message_medicine_confirm">%1$s（%2$s）을 복용하셨습니까？</string>
+    
+    <!-- 앞으로의 알림 다이얼로그 -->
+    <string name="dialog_title_future_reminders">앞으로의 알림</string>
+    <string name="next_reminder_text">다음 알림：</string>
+    <string name="no_future_reminders">앞으로의 약 알림이 없습니다</string>
 
     <!-- 에러提示 -->
     <string name="error_unknown_viewmodel">알 수 없는 ViewModel 클래스</string>

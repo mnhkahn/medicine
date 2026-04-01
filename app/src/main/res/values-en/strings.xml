@@ -27,7 +27,7 @@
     <string name="cycle_monthly">Monthly</string>
     <string name="cycle_yearly">Yearly</string>
     <string name="cycle_default">Daily</string>
-    
+
     <!-- Log -->
     <string name="log_main_start">===== MainActivity starting =====</string>
     <string name="log_main_complete">===== MainActivity started successfully =====</string>
@@ -43,6 +43,11 @@
     <!-- Medication Confirmation Dialog -->
     <string name="dialog_title_medicine_confirm">Medication Confirmation</string>
     <string name="dialog_message_medicine_confirm">Have you taken %1$s (%2$s)?</string>
+
+    <!-- Future Reminders Dialog -->
+    <string name="dialog_title_future_reminders">Future Reminders</string>
+    <string name="next_reminder_text">Next reminder:</string>
+    <string name="no_future_reminders">No future medication reminders</string>
 
     <!-- Error -->
     <string name="error_unknown_viewmodel">Unknown ViewModel class</string>

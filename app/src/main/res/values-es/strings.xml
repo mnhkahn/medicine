@@ -43,6 +43,11 @@
     <!-- Confirmación de toma -->
     <string name="dialog_title_medicine_confirm">Confirmación de toma</string>
     <string name="dialog_message_medicine_confirm">¿Ha tomado %1$s (%2$s)?</string>
+    
+    <!-- Recordatorios futuros -->
+    <string name="dialog_title_future_reminders">Recordatorios futuros</string>
+    <string name="next_reminder_text">Próximo recordatorio:</string>
+    <string name="no_future_reminders">No hay recordatorios de medicamentos futuros</string>
 
     <!-- Error -->
     <string name="error_unknown_viewmodel">Clase ViewModel desconocida</string>

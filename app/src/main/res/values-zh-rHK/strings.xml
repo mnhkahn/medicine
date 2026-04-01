@@ -42,6 +42,11 @@
     <!-- 服藥確認對話框 -->
     <string name="dialog_title_medicine_confirm">服藥確認</string>
     <string name="dialog_message_medicine_confirm">您是否已經服用了 %1$s（%2$s）？</string>
+    
+    <!-- 未來提醒對話框 -->
+    <string name="dialog_title_future_reminders">未來提醒明細</string>
+    <string name="next_reminder_text">下次提醒：</string>
+    <string name="no_future_reminders">目前沒有未來提醒的藥物</string>
 
     <!-- 錯誤提示 -->
     <string name="error_unknown_viewmodel">未知的ViewModel類別</string>

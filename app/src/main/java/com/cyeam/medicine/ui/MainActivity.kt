@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 绑定历史记录按钮
-        val btnHistory = findViewById<Button>(R.id.btn_history)
+        val btnHistory = findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.btn_history)
         btnHistory.setOnClickListener {
             // 跳转到服药历史页面
             startActivity(Intent(this, MedicineHistoryActivity::class.java))
@@ -232,7 +232,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             dialog.dismiss()
-            Toast.makeText(this, "药品添加成功，提醒已设置", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.toast_medicine_add_success), Toast.LENGTH_SHORT).show()
         }
 
         dialog.show()
@@ -243,13 +243,13 @@ class MainActivity : AppCompatActivity() {
             db.medicineDao().delete(medicine)
             AlarmHelper.cancelAlarm(this@MainActivity, medicine.id)
         }
-        Toast.makeText(this, "药品已删除", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.toast_medicine_delete_success), Toast.LENGTH_SHORT).show()
     }
 
     private fun showFutureRemindersDialog() {
         CoroutineScope(Dispatchers.IO).launch {
             val allMedicines = db.medicineDao().getAllMedicinesSync()
-            val futureReminders = mutableListOf<String>()
+            val futureReminders = mutableListOf<Pair<Long, String>>() // 存储 (提醒时间, 提醒信息)
             val currentTime = System.currentTimeMillis()
 
             for (medicine in allMedicines) {
@@ -264,18 +264,22 @@ class MainActivity : AppCompatActivity() {
                         CycleType.MONTHLY -> getString(R.string.cycle_monthly)
                         CycleType.YEARLY -> getString(R.string.cycle_yearly)
                     }
-                    futureReminders.add("${medicine.name}（${medicine.dosage}）\n下次提醒：$reminderTimeStr\n周期：$cycleTypeStr")
+                    val reminderInfo = "${medicine.name}（${medicine.dosage}）\n${getString(R.string.next_reminder_text)}$reminderTimeStr\n${getString(R.string.reminder_period_text)}$cycleTypeStr"
+                    futureReminders.add(Pair(nextReminderTime, reminderInfo))
                 }
             }
 
+            // 按照提醒时间排序，最近的放在前面
+            futureReminders.sortBy { it.first }
+
             runOnUiThread {
                 val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(this@MainActivity)
-                    .setTitle("未来提醒明细")
+                    .setTitle(getString(R.string.dialog_title_future_reminders))
 
                 if (futureReminders.isEmpty()) {
-                    dialogBuilder.setMessage("当前没有未来提醒的药品")
+                    dialogBuilder.setMessage(getString(R.string.no_future_reminders))
                 } else {
-                    val message = futureReminders.joinToString("\n\n")
+                    val message = futureReminders.map { it.second }.joinToString("\n\n")
                     dialogBuilder.setMessage(message)
                 }
 

@@ -43,6 +43,11 @@
     <!-- Einnahmebestätigung -->
     <string name="dialog_title_medicine_confirm">Einnahmebestätigung</string>
     <string name="dialog_message_medicine_confirm">Haben Sie %1$s (%2$s) eingenommen?</string>
+    
+    <!-- Zukünftige Erinnerungen -->
+    <string name="dialog_title_future_reminders">Zukünftige Erinnerungen</string>
+    <string name="next_reminder_text">Nächste Erinnerung:</string>
+    <string name="no_future_reminders">Keine zukünftigen Medikamentenerinnerungen</string>
 
     <!-- Error -->
     <string name="error_unknown_viewmodel">Unbekannte ViewModel-Klasse</string>

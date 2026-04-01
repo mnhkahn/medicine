@@ -43,6 +43,11 @@
     <!-- 服用確認ダイアログ -->
     <string name="dialog_title_medicine_confirm">服用確認</string>
     <string name="dialog_message_medicine_confirm">%1$s（%2$s）を服用しましたか？</string>
+    
+    <!-- 今後のリマインドダイアログ -->
+    <string name="dialog_title_future_reminders">今後のリマインド</string>
+    <string name="next_reminder_text">次回のリマインド：</string>
+    <string name="no_future_reminders">今後のお薬のリマインドはありません</string>
 
     <!-- エラー提示 -->
     <string name="error_unknown_viewmodel">未知のViewModelクラス</string>
