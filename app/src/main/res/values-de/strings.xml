@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Medikamente nicht vergessen</string>
+    <string name="add_item_name_hint">Medikamentenname (z.B. Baijiahei)</string>
+    <string name="add_item_count_hit">Dosis (z.B. 1 Tablette pro Einnahme)</string>
+    <string name="add_item_select_time">Zeit auswählen: 08:00</string>
+    <string name="save">Speichern</string>
+    <string name="main_view_history">Einnahmeverlauf anzeigen</string>
+    <string name="main_view_future_reminders">Zukünftige Erinnerungen anzeigen</string>
+    <string name="item_name">Medikamentenname</string>
+    <string name="item_count">Dosis</string>
+    <string name="need_have_medicine">Es ist Zeit, das Medikament einzunehmen</string>
+    <string name="had_medicine">✅Eingenommen</string>
+    <string name="remind_latar">⏰Erinnerung in 15 Minuten</string>
+    <string name="reminder_period_text">Erinnerungsintervall：</string>
+    <string name="time_label">Zeit</string>
+
+    <!-- Dialog/Button -->
+    <string name="btn_cancel">Abbrechen</string>
+    <string name="unit_day">1 Tag(e)</string>
+    <string name="btn_confirm">OK</string>
+    <string name="title_select_cycle">Erinnerungsintervall wählen</string>
+    <string name="select_start_date">Startdatum auswählen</string>
+
+    <!-- 周期类型 -->
+    <string name="cycle_daily">Täglich</string>
+    <string name="cycle_weekly">Wöchentlich</string>
+    <string name="cycle_monthly">Monatlich</string>
+    <string name="cycle_yearly">Jährlich</string>
+    <string name="cycle_default">Täglich</string>
+
+    <string name="log_main_start">===== MainActivity startet =====</string>
+    <string name="log_main_complete">===== MainActivity erfolgreich gestartet =====</string>
+    <string name="log_permission_grant">Berechtigung erteilt: %s</string>
+    <string name="log_permission_deny">Berechtigung verweigert: %s (Erinnerungsfunktion funktioniert möglicherweise nicht)</string>
+
+    <!-- Toast -->
+    <string name="toast_input_medicine_name">Bitte Medikamentennamen eingeben</string>
+    <string name="toast_medicine_add_success">Medikament hinzugefügt, Erinnerung gesetzt</string>
+    <string name="toast_medicine_delete_success">Medikament gelöscht</string>
+    <string name="toast_medicine_taken_record_added">Einnahmenachricht hinzugefügt</string>
+
+    <!-- Einnahmebestätigung -->
+    <string name="dialog_title_medicine_confirm">Einnahmebestätigung</string>
+    <string name="dialog_message_medicine_confirm">Haben Sie %1$s (%2$s) eingenommen?</string>
+    
+    <!-- Zukünftige Erinnerungen -->
+    <string name="dialog_title_future_reminders">Zukünftige Erinnerungen</string>
+    <string name="next_reminder_text">Nächste Erinnerung:</string>
+    <string name="no_future_reminders">Keine zukünftigen Medikamentenerinnerungen</string>
+
+    <!-- Error -->
+    <string name="error_unknown_viewmodel">Unbekannte ViewModel-Klasse</string>
+
+    <!-- Einnahmeverlauf -->
+    <string name="history_status_taken">Eingenommen</string>
+    <string name="history_status_not_taken">Nicht eingenommen</string>
+</resources>

@@ -12,7 +12,8 @@ import com.cyeam.medicine.R
 import com.cyeam.medicine.data.Medicine
 
 class MedicineAdapter(
-    private val onDeleteClick: (Medicine) -> Unit
+    private val onDeleteClick: (Medicine) -> Unit,
+    private val onItemClick: (Medicine) -> Unit
 ) : ListAdapter<Medicine, MedicineAdapter.MedicineViewHolder>(DiffCallback) {
 
     inner class MedicineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -30,9 +31,12 @@ class MedicineAdapter(
     override fun onBindViewHolder(holder: MedicineViewHolder, position: Int) {
         val medicine = getItem(position)
         holder.tvName.text = medicine.name
-        holder.tvDosage.text = "剂量: ${medicine.dosage}"
+        val dosageLabel = holder.itemView.context.getString(R.string.item_count)
+        holder.tvDosage.text = "$dosageLabel: ${medicine.dosage}"
         holder.tvTime.text = String.format("%02d:%02d", medicine.timeHour, medicine.timeMinute)
         holder.btnDelete.setOnClickListener { onDeleteClick(medicine) }
+        // 添加药品项点击事件
+        holder.itemView.setOnClickListener { onItemClick(medicine) }
     }
 
     companion object DiffCallback : DiffUtil.ItemCallback<Medicine>() {

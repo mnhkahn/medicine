@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">お薬忘れずに</string>
+    <string name="add_item_name_hint">薬品名（例：白加黒）</string>
+    <string name="add_item_count_hit">服用量（例：1回1錠）</string>
+    <string name="add_item_select_time">時間選択: 08:00</string>
+    <string name="save">保存</string>
+    <string name="main_view_history">服用履歴を見る</string>
+    <string name="main_view_future_reminders">今後のリマインドを見る</string>
+    <string name="item_name">薬品名</string>
+    <string name="item_count">服用量</string>
+    <string name="need_have_medicine">お薬の時間です</string>
+    <string name="had_medicine">✅服用済み</string>
+    <string name="remind_latar">⏰15分後にリマインド</string>
+    <string name="reminder_period_text">リマインド周期：</string>
+    <string name="time_label">時間</string>
+    <!-- ダイアログ/ボタン -->
+    <string name="btn_confirm">確定</string>
+    <string name="btn_cancel">キャンセル</string>
+    <string name="unit_day">1日</string>
+    <string name="title_select_cycle">リマインド周期を選択</string>
+    <string name="select_start_date">開始日を選択</string>
+
+    <!-- 周期タイプ -->
+    <string name="cycle_daily">毎日</string>
+    <string name="cycle_weekly">毎週</string>
+    <string name="cycle_monthly">毎月</string>
+    <string name="cycle_yearly">毎年</string>
+    <string name="cycle_default">毎日</string>
+
+    <!-- ログ -->
+    <string name="log_main_start">===== MainActivity 起動開始 =====</string>
+    <string name="log_main_complete">===== MainActivity 起動完了 =====</string>
+    <string name="log_permission_grant">権限申請成功：%s</string>
+    <string name="log_permission_deny">権限申請拒否：%s（リマインダー機能が正常に動作しない可能性があります）</string>
+
+    <!-- Toast提示 -->
+    <string name="toast_input_medicine_name">薬の名前を入力してください</string>
+    <string name="toast_medicine_add_success">薬が正常に追加されました、リマインダーを設定しました</string>
+    <string name="toast_medicine_delete_success">薬を削除しました</string>
+    <string name="toast_medicine_taken_record_added">服用記録が追加されました</string>
+
+    <!-- 服用確認ダイアログ -->
+    <string name="dialog_title_medicine_confirm">服用確認</string>
+    <string name="dialog_message_medicine_confirm">%1$s（%2$s）を服用しましたか？</string>
+    
+    <!-- 今後のリマインドダイアログ -->
+    <string name="dialog_title_future_reminders">今後のリマインド</string>
+    <string name="next_reminder_text">次回のリマインド：</string>
+    <string name="no_future_reminders">今後のお薬のリマインドはありません</string>
+
+    <!-- エラー提示 -->
+    <string name="error_unknown_viewmodel">未知のViewModelクラス</string>
+
+    <!-- 服用履歴 -->
+    <string name="history_status_taken">服用済み</string>
+    <string name="history_status_not_taken">未服用</string>
+</resources>

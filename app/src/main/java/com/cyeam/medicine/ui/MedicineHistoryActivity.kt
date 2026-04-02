@@ -28,7 +28,7 @@ class MedicineHistoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history)
 
-        supportActionBar?.title = "服药历史记录"
+        supportActionBar?.title = getString(R.string.main_view_history)
 
         val rv = findViewById<RecyclerView>(R.id.rv_history)
         adapter = RecordAdapter()
@@ -68,9 +68,12 @@ class RecordAdapter : ListAdapter<MedicineRecord, RecordAdapter.VH>(
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val item = getItem(position)
-        holder.name.text = "药品：${item.medicineName}"
-        holder.time.text = "时间：${formatTime(item.takeTime)}"
-        holder.status.text = if (item.isCompleted) "已服药" else "未服药"
+        holder.name.text = "${holder.itemView.context.getString(R.string.item_name)}：${item.medicineName}"
+        holder.time.text = "${holder.itemView.context.getString(R.string.time_label)}：${formatTime(item.takeTime)}"
+        holder.status.text = if (item.isCompleted) 
+            holder.itemView.context.getString(R.string.history_status_taken) 
+        else 
+            holder.itemView.context.getString(R.string.history_status_not_taken)
     }
 
     // 时间戳 → 格式化时间

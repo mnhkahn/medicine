@@ -9,23 +9,58 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
-    <!-- 新增：历史记录按钮 -->
-    <Button
-        android:id="@+id/btn_history"
+
+    <!-- 底部按钮区域 -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="查看服药历史"
-        android:layout_margin="8dp"/>
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:padding="16dp">
 
-    <!-- 原有FAB（如果有） -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@android:drawable/ic_menu_add"/>
+        <!-- 未来提醒查询按钮 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_future_reminders"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@android:drawable/ic_menu_today" />
+        </LinearLayout>
+
+        <!-- 查看服药历史按钮 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@android:drawable/ic_menu_recent_history" />
+        </LinearLayout>
+
+        <!-- 添加药品按钮 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@android:drawable/ic_menu_add" />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

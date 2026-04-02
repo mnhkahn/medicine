@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import com.cyeam.medicine.data.CycleType
 import com.cyeam.medicine.data.Medicine
 import com.cyeam.medicine.data.MedicineDatabase
 import kotlinx.coroutines.CoroutineScope
@@ -32,7 +33,7 @@ object AlarmHelper {
         }
     }
 
-    // 【核心2】设置单个药品的每日精确闹钟（触发后自动续期）
+    // 【核心2】设置单个药品的闹钟（支持不同周期类型）
     fun setDailyAlarm(context: Context, medicine: Medicine) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java).apply {
@@ -49,17 +50,26 @@ object AlarmHelper {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        // 计算闹钟触发时间（今日/次日）
+        // 计算闹钟触发时间（考虑开始时间和周期类型）
         val calendar = Calendar.getInstance().apply {
+            // 首先设置为开始日期的提醒时间
+            timeInMillis = medicine.startDate
             set(Calendar.HOUR_OF_DAY, medicine.timeHour)
             set(Calendar.MINUTE, medicine.timeMinute)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
-            // 今日时间已过，自动设置为明天
-            if (before(Calendar.getInstance())) {
-                add(Calendar.DAY_OF_MONTH, 1)
-                Log.i(TAG, "药品${medicine.name}今日时间已过，设置为次日${medicine.timeHour}:${medicine.timeMinute}")
+            
+            // 如果提醒时间已过，根据周期类型计算下一次提醒时间
+            val currentTime = System.currentTimeMillis()
+            while (timeInMillis <= currentTime) {
+                when (medicine.cycleType) {
+                    CycleType.DAILY -> add(Calendar.DAY_OF_YEAR, 1)
+                    CycleType.WEEKLY -> add(Calendar.WEEK_OF_YEAR, 1)
+                    CycleType.MONTHLY -> add(Calendar.MONTH, 1)
+                    CycleType.YEARLY -> add(Calendar.YEAR, 1)
+                }
             }
+            Log.i(TAG, "药品${medicine.name}今日时间已过，设置为下次${medicine.timeHour}:${medicine.timeMinute}")
         }
 
         // 适配所有Android版本的精确闹钟，Doze模式下也能唤醒
@@ -77,7 +87,7 @@ object AlarmHelper {
                     pendingIntent
                 )
             }
-            Log.i(TAG, "闹钟设置成功！药品：${medicine.name}，触发时间：${calendar.time}")
+            Log.i(TAG, "闹钟设置成功！药品：${medicine.name}，触发时间：${calendar.time}，周期：${medicine.cycleType}")
         } catch (e: SecurityException) {
             Log.e(TAG, "闹钟设置失败，缺少精确闹钟权限：${e.message}")
         }

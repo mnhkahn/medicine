@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">藥不能停</string>
+    <string name="add_item_name_hint">藥品名稱（如：白加黑）</string>
+    <string name="add_item_count_hit">劑量（如：每次一錠）</string>
+    <string name="add_item_select_time">選擇時間: 08:00</string>
+    <string name="save">儲存</string>
+    <string name="main_view_history">查看服藥記錄</string>
+    <string name="main_view_future_reminders">查看未來提醒</string>
+    <string name="item_name">藥品名</string>
+    <string name="item_count">劑量</string>
+    <string name="need_have_medicine">係時候食藥啦</string>
+    <string name="had_medicine">✅已服藥</string>
+    <string name="remind_latar">⏰15分鐘後提醒</string>
+    <string name="reminder_period_text">提醒週期：</string>
+    <!-- 彈窗/按鈕 -->
+    <string name="btn_confirm">確定</string>
+    <string name="btn_cancel">取消</string>
+    <string name="unit_day">1日</string>
+    <string name="time_label">時間</string>
+    <string name="title_select_cycle">選擇提醒周期</string>
+    <string name="select_start_date">選擇開始日期</string>
+
+    <!-- 周期類型 -->
+    <string name="cycle_daily">每日</string>
+    <string name="cycle_weekly">每週</string>
+    <string name="cycle_monthly">每月</string>
+    <string name="cycle_yearly">每年</string>
+    <string name="cycle_default">每日</string>
+    <!-- 日志 -->
+    <string name="log_main_start">===== MainActivity 開始啟動 =====</string>
+    <string name="log_main_complete">===== MainActivity 啟動完成 =====</string>
+    <string name="log_permission_grant">權限申請成功：%s</string>
+    <string name="log_permission_deny">權限申請被拒絕：%s（可能導致提醒功能失效）</string>
+
+    <!-- Toast提示 -->
+    <string name="toast_input_medicine_name">請輸入藥物名稱</string>
+    <string name="toast_medicine_add_success">藥物新增成功，提醒已設定</string>
+    <string name="toast_medicine_delete_success">藥物已刪除</string>
+    <string name="toast_medicine_taken_record_added">服藥記錄已添加</string>
+
+    <!-- 服藥確認對話框 -->
+    <string name="dialog_title_medicine_confirm">服藥確認</string>
+    <string name="dialog_message_medicine_confirm">您是否已經服用了 %1$s（%2$s）？</string>
+    
+    <!-- 未來提醒對話框 -->
+    <string name="dialog_title_future_reminders">未來提醒明細</string>
+    <string name="next_reminder_text">下次提醒：</string>
+    <string name="no_future_reminders">目前沒有未來提醒的藥物</string>
+
+    <!-- 錯誤提示 -->
+    <string name="error_unknown_viewmodel">未知的ViewModel類別</string>
+
+    <!-- 服藥記錄 -->
+    <string name="history_status_taken">已服藥</string>
+    <string name="history_status_not_taken">未服藥</string>
+</resources>

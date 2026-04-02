@@ -1,3 +1,56 @@
 <resources>
     <string name="app_name">药不能停</string>
+    <string name="add_item_name_hint">药品名称（如：白加黑）</string>
+    <string name="add_item_count_hit">剂量（如：每次一片）</string>
+    <string name="add_item_select_time">选择时间: 08:00</string>
+    <string name="save">保存</string>
+    <string name="main_view_history">查看服药历史</string>
+    <string name="main_view_future_reminders">查看未来提醒</string>
+    <string name="item_name">药品名</string>
+    <string name="item_count">剂量</string>
+    <string name="need_have_medicine">该吃药了</string>
+    <string name="had_medicine">✅已服药</string>
+    <string name="remind_latar">⏰15分钟后提醒</string>
+    <string name="reminder_period_text">提醒周期：</string>
+    <string name="time_label">时间</string>
+    <!-- 弹窗/按钮文本 -->
+    <string name="btn_confirm">确定</string>
+    <string name="btn_cancel">取消</string>
+    <string name="unit_day">1天</string>
+    <string name="title_select_cycle">选择提醒周期</string>
+    <string name="select_start_date">选择开始日期</string>
+
+    <!-- 周期类型 -->
+    <string name="cycle_daily">每天</string>
+    <string name="cycle_weekly">每周</string>
+    <string name="cycle_monthly">每月</string>
+    <string name="cycle_yearly">每年</string>
+    <string name="cycle_default">每天</string>
+
+    <string name="log_main_start">===== MainActivity 开始启动 =====</string>
+    <string name="log_main_complete">===== MainActivity 启动完成 =====</string>
+    <string name="log_permission_grant">权限申请成功：%s</string>
+    <string name="log_permission_deny">权限申请被拒绝：%s（可能导致提醒功能失效）</string>
+
+    <!-- Toast提示 -->
+    <string name="toast_input_medicine_name">请输入药品名称</string>
+    <string name="toast_medicine_add_success">药品添加成功，提醒已设置</string>
+    <string name="toast_medicine_delete_success">药品已删除</string>
+    <string name="toast_medicine_taken_record_added">服药记录已添加</string>
+
+    <!-- 服药确认对话框 -->
+    <string name="dialog_title_medicine_confirm">服药确认</string>
+    <string name="dialog_message_medicine_confirm">您是否已经服用了 %1$s（%2$s）？</string>
+    
+    <!-- 未来提醒对话框 -->
+    <string name="dialog_title_future_reminders">未来提醒明细</string>
+    <string name="next_reminder_text">下次提醒：</string>
+    <string name="no_future_reminders">当前没有未来提醒的药品</string>
+
+    <!-- 错误提示 -->
+    <string name="error_unknown_viewmodel">Unknown ViewModel class</string>
+
+    <!-- 服药历史 -->
+    <string name="history_status_taken">已服药</string>
+    <string name="history_status_not_taken">未服药</string>
 </resources>

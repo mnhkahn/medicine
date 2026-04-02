@@ -24,14 +24,14 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:text="药品名"/>
+                android:text="@string/item_name"/>
 
             <TextView
                 android:id="@+id/tvDosage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:text="剂量"/>
+                android:text="@string/item_count"/>
 
         </LinearLayout>
 

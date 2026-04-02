@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pill Reminder</string>
+    <string name="add_item_name_hint">Medicine Name (e.g. Tylenol)</string>
+    <string name="add_item_count_hit">Dosage (e.g. 1 tablet per dose)</string>
+    <string name="add_item_select_time">Select Time: 08:00</string>
+    <string name="save">Save</string>
+    <string name="main_view_history">View Medication History</string>
+    <string name="main_view_future_reminders">View Future Reminders</string>
+    <string name="item_name">Medicine Name</string>
+    <string name="item_count">Dosage</string>
+    <string name="need_have_medicine">Time to take your medicine</string>
+    <string name="had_medicine">✅ Taken</string>
+    <string name="remind_latar">⏰ Remind me in 15 minutes</string>
+    <string name="reminder_period_text">Reminder Cycle:</string>
+    <string name="time_label">Time</string>
+    <!-- Dialog/Button -->
+    <string name="btn_confirm">Confirm</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="unit_day">1 day(s)</string>
+    <string name="title_select_cycle">Select Reminder Cycle</string>
+    <string name="select_start_date">Select Start Date</string>
+
+    <!-- Cycle Type -->
+    <string name="cycle_daily">Daily</string>
+    <string name="cycle_weekly">Weekly</string>
+    <string name="cycle_monthly">Monthly</string>
+    <string name="cycle_yearly">Yearly</string>
+    <string name="cycle_default">Daily</string>
+
+    <!-- Log -->
+    <string name="log_main_start">===== MainActivity starting =====</string>
+    <string name="log_main_complete">===== MainActivity started successfully =====</string>
+    <string name="log_permission_grant">Permission granted: %s</string>
+    <string name="log_permission_deny">Permission denied: %s (Reminder function may not work)</string>
+
+    <!-- Toast -->
+    <string name="toast_input_medicine_name">Please enter medicine name</string>
+    <string name="toast_medicine_add_success">Medicine added successfully, reminder set</string>
+    <string name="toast_medicine_delete_success">Medicine deleted</string>
+    <string name="toast_medicine_taken_record_added">Medication record added</string>
+
+    <!-- Medication Confirmation Dialog -->
+    <string name="dialog_title_medicine_confirm">Medication Confirmation</string>
+    <string name="dialog_message_medicine_confirm">Have you taken %1$s (%2$s)?</string>
+
+    <!-- Future Reminders Dialog -->
+    <string name="dialog_title_future_reminders">Future Reminders</string>
+    <string name="next_reminder_text">Next reminder:</string>
+    <string name="no_future_reminders">No future medication reminders</string>
+
+    <!-- Error -->
+    <string name="error_unknown_viewmodel">Unknown ViewModel class</string>
+
+    <!-- Medication History -->
+    <string name="history_status_taken">Taken</string>
+    <string name="history_status_not_taken">Not taken</string>
+</resources>

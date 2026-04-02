@@ -12,22 +12,6 @@ android {
     namespace = "com.cyeam.medicine"
     compileSdk = 34
 
-    defaultConfig {
-        applicationId = "com.cyeam.medicine"
-        minSdk = 26
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments["room.schemaLocation"] = "$projectDir/schemas"
-            }
-        }
-    }
-
     // 2. 简化Properties引用（核心修复点：去掉java.util.前缀）
     val localProperties = Properties()
     val localPropertiesFile = rootProject.file("local.properties")
@@ -39,6 +23,30 @@ android {
     val storePassword = localProperties.getProperty("signing.storePassword")
     val keyAlias = localProperties.getProperty("signing.keyAlias")
     val keyPassword = localProperties.getProperty("signing.keyPassword")
+    var baiduMTJKey = localProperties.getProperty("baidu.mtj.app.key")
+
+    defaultConfig {
+        applicationId = "com.cyeam.medicine"
+        minSdk = 26
+        targetSdk = 34
+        versionCode = 2
+        versionName = "v1.0.1"
+
+        androidResources {
+            generateLocaleConfig = true
+        }
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Room 数据库配置
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
+
+        manifestPlaceholders["BAIDU_MTJ_APP_KEY"] = baiduMTJKey
+    }
 
     signingConfigs {
         create("release") {
@@ -83,6 +91,7 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.8.2")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation(files("libs/Baidu_Mtj_android_4.0.11.0.jar"))
 
     // Room 数据库
     val roomVersion = "2.4.0"

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ne pas oublier ses pilules</string>
+    <string name="add_item_name_hint">Nom du médicament (ex: Baijiahei)</string>
+    <string name="add_item_count_hit">Dose (ex: 1 comprimé chaque fois)</string>
+    <string name="add_item_select_time">Choisir l\'heure : 08:00</string>
+    <string name="save">Enregistrer</string>
+    <string name="main_view_history">Voir l\'historique des prises</string>
+    <string name="main_view_future_reminders">Voir les rappels futurs</string>
+    <string name="item_name">Nom du médicament</string>
+    <string name="item_count">Dose</string>
+    <string name="need_have_medicine">Il est temps de prendre votre médicament</string>
+    <string name="had_medicine">✅ Pris</string>
+    <string name="remind_latar">⏰ Rappel dans 15 minutes</string>
+    <string name="reminder_period_text">Intervalle de rappel :</string>
+    <string name="time_label">Heure</string>
+
+    <!-- Dialogue/Bouton -->
+    <string name="btn_confirm">Confirmer</string>
+    <string name="btn_cancel">Annuler</string>
+    <string name="unit_day">1 jour(s)</string>
+    <string name="title_select_cycle">Sélectionner l\'intervalle de rappel</string>
+    <string name="select_start_date">Sélectionner la date de début</string>
+
+    <!-- Type de cycle -->
+    <string name="cycle_daily">Quotidien</string>
+    <string name="cycle_weekly">Hebdomadaire</string>
+    <string name="cycle_monthly">Mensuel</string>
+    <string name="cycle_yearly">Annuel</string>
+    <string name="cycle_default">Quotidien</string>
+
+    <!-- Log -->
+    <string name="log_main_start">===== MainActivity démarrage =====</string>
+    <string name="log_main_complete">===== MainActivity démarrage terminé =====</string>
+    <string name="log_permission_grant">Permission accordée: %s</string>
+    <string name="log_permission_deny">Permission refusée: %s (La fonction de rappel peut ne pas fonctionner)</string>
+
+    <!-- Toast -->
+    <string name="toast_input_medicine_name">Veuillez entrer le nom du médicament</string>
+    <string name="toast_medicine_add_success">Médicament ajouté avec succès, rappel configuré</string>
+    <string name="toast_medicine_delete_success">Médicament supprimé</string>
+    <string name="toast_medicine_taken_record_added">Enregistrement de prise ajouté</string>
+
+    <!-- Confirmation de prise -->
+    <string name="dialog_title_medicine_confirm">Confirmation de prise</string>
+    <string name="dialog_message_medicine_confirm">Avez-vous pris %1$s (%2$s)?</string>
+    
+    <!-- Rappels futurs -->
+    <string name="dialog_title_future_reminders">Rappels futurs</string>
+    <string name="next_reminder_text">Prochain rappel:</string>
+    <string name="no_future_reminders">Aucun rappel de médicament futur</string>
+
+    <!-- Erreur -->
+    <string name="error_unknown_viewmodel">Classe ViewModel inconnue</string>
+
+    <!-- Historique des médicaments -->
+    <string name="history_status_taken">Pris</string>
+    <string name="history_status_not_taken">Non pris</string>
+</resources>

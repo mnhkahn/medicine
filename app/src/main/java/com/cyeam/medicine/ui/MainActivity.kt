@@ -1,12 +1,11 @@
 package com.cyeam.medicine.ui
 
+import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -18,15 +17,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.baidu.mobstat.StatService
 import com.cyeam.medicine.R
+import com.cyeam.medicine.data.CycleType
 import com.cyeam.medicine.data.Medicine
 import com.cyeam.medicine.data.MedicineDatabase
+import com.cyeam.medicine.data.MedicineRecord
 import com.cyeam.medicine.helper.AlarmHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Calendar
+import java.util.Date
 
 class MainActivity : AppCompatActivity() {
     private val PERMISSION_REQUEST_CODE = 1001
@@ -48,7 +51,8 @@ class MainActivity : AppCompatActivity() {
         val fab = findViewById<FloatingActionButton>(R.id.fab)
 
         adapter = MedicineAdapter(
-            onDeleteClick = { medicine -> deleteMedicine(medicine) }
+            onDeleteClick = { medicine -> deleteMedicine(medicine) },
+            onItemClick = { medicine -> showMedicineConfirmDialog(medicine) }
         )
         rv.adapter = adapter
         rv.layoutManager = LinearLayoutManager(this)
@@ -63,10 +67,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 绑定历史记录按钮
-        val btnHistory = findViewById<Button>(R.id.btn_history)
+        val btnHistory = findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.btn_history)
         btnHistory.setOnClickListener {
             // 跳转到服药历史页面
             startActivity(Intent(this, MedicineHistoryActivity::class.java))
+        }
+
+        // 绑定未来提醒查询按钮
+        val btnFutureReminders = findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.btn_future_reminders)
+        btnFutureReminders.setOnClickListener {
+            showFutureRemindersDialog()
         }
 
         fab.setOnClickListener {
@@ -74,6 +84,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         AlarmHelper.initAllAlarms(this)
+
+        StatService.setDebugOn(true);
+        // 启动统计
+        StatService.autoTrace(this);
         Log.i(TAG, "===== MainActivity 启动完成 =====")
     }
 
@@ -125,11 +139,21 @@ class MainActivity : AppCompatActivity() {
         val etName = dialogView.findViewById<EditText>(R.id.etName)
         val etDosage = dialogView.findViewById<EditText>(R.id.etDosage)
         val btnTime = dialogView.findViewById<Button>(R.id.btnTime)
+        val btnStartDate = dialogView.findViewById<Button>(R.id.btnStartDate)
+        val btnCycleType = dialogView.findViewById<Button>(R.id.btnCycleType)
         val btnSave = dialogView.findViewById<Button>(R.id.btnSave)
 
         var selectedHour = 8
         var selectedMinute = 0
+        var selectedStartDate = Calendar.getInstance().timeInMillis // 默认今天
+        var selectedCycleType = CycleType.DAILY // 默认每天
+        
+        // 初始化按钮文本（使用多语言）
+        val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+        btnStartDate.text = getString(R.string.select_start_date) + ": " + sdf.format(Date(selectedStartDate))
+        btnCycleType.text = getString(R.string.reminder_period_text) + getString(R.string.cycle_daily)
 
+        // 时间选择
         btnTime.setOnClickListener {
             val cal = Calendar.getInstance()
             TimePickerDialog(this, { _, h, m ->
@@ -137,6 +161,51 @@ class MainActivity : AppCompatActivity() {
                 selectedMinute = m
                 btnTime.text = String.format("%02d:%02d", h, m)
             }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
+        }
+
+        // 开始日期选择
+        btnStartDate.setOnClickListener {
+            val cal = Calendar.getInstance()
+            cal.timeInMillis = selectedStartDate
+            DatePickerDialog(
+                this,
+                DatePickerDialog.OnDateSetListener {
+                    _, year, month, dayOfMonth ->
+                    val selectedCal = Calendar.getInstance()
+                    selectedCal.set(year, month, dayOfMonth, 0, 0, 0)
+                    selectedCal.set(Calendar.MILLISECOND, 0)
+                    selectedStartDate = selectedCal.timeInMillis
+                    
+                    val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+                    btnStartDate.text = getString(R.string.select_start_date) + ": " + sdf.format(Date(selectedStartDate))
+                },
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+
+        // 周期类型选择
+        btnCycleType.setOnClickListener {
+            val items = arrayOf(
+                getString(R.string.cycle_daily),
+                getString(R.string.cycle_weekly),
+                getString(R.string.cycle_monthly),
+                getString(R.string.cycle_yearly)
+            )
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle(getString(R.string.title_select_cycle))
+                .setItems(items) { _, which ->
+                    selectedCycleType = when (which) {
+                        0 -> CycleType.DAILY
+                        1 -> CycleType.WEEKLY
+                        2 -> CycleType.MONTHLY
+                        3 -> CycleType.YEARLY
+                        else -> CycleType.DAILY
+                    }
+                    btnCycleType.text = getString(R.string.reminder_period_text) + items[which]
+                }
+                .show()
         }
 
         btnSave.setOnClickListener {
@@ -153,7 +222,9 @@ class MainActivity : AppCompatActivity() {
                     name = name,
                     dosage = dosage,
                     timeHour = selectedHour,
-                    timeMinute = selectedMinute
+                    timeMinute = selectedMinute,
+                    startDate = selectedStartDate,
+                    cycleType = selectedCycleType
                 )
                 val medId = db.medicineDao().insert(medicine)
                 val newMedicine = medicine.copy(id = medId.toInt())
@@ -161,7 +232,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             dialog.dismiss()
-            Toast.makeText(this, "药品添加成功，提醒已设置", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.toast_medicine_add_success), Toast.LENGTH_SHORT).show()
         }
 
         dialog.show()
@@ -172,7 +243,102 @@ class MainActivity : AppCompatActivity() {
             db.medicineDao().delete(medicine)
             AlarmHelper.cancelAlarm(this@MainActivity, medicine.id)
         }
-        Toast.makeText(this, "药品已删除", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.toast_medicine_delete_success), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showFutureRemindersDialog() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val allMedicines = db.medicineDao().getAllMedicinesSync()
+            val futureReminders = mutableListOf<Pair<Long, String>>() // 存储 (提醒时间, 提醒信息)
+            val currentTime = System.currentTimeMillis()
+
+            for (medicine in allMedicines) {
+                // 计算下一次提醒时间
+                val nextReminderTime = calculateNextReminderTime(medicine, currentTime)
+                if (nextReminderTime > currentTime) {
+                    val sdf = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault())
+                    val reminderTimeStr = sdf.format(Date(nextReminderTime))
+                    val cycleTypeStr = when (medicine.cycleType) {
+                        CycleType.DAILY -> getString(R.string.cycle_daily)
+                        CycleType.WEEKLY -> getString(R.string.cycle_weekly)
+                        CycleType.MONTHLY -> getString(R.string.cycle_monthly)
+                        CycleType.YEARLY -> getString(R.string.cycle_yearly)
+                    }
+                    val reminderInfo = "${medicine.name}（${medicine.dosage}）\n${getString(R.string.next_reminder_text)}$reminderTimeStr\n${getString(R.string.reminder_period_text)}$cycleTypeStr"
+                    futureReminders.add(Pair(nextReminderTime, reminderInfo))
+                }
+            }
+
+            // 按照提醒时间排序，最近的放在前面
+            futureReminders.sortBy { it.first }
+
+            runOnUiThread {
+                val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(this@MainActivity)
+                    .setTitle(getString(R.string.dialog_title_future_reminders))
+
+                if (futureReminders.isEmpty()) {
+                    dialogBuilder.setMessage(getString(R.string.no_future_reminders))
+                } else {
+                    val message = futureReminders.map { it.second }.joinToString("\n\n")
+                    dialogBuilder.setMessage(message)
+                }
+
+                dialogBuilder.setPositiveButton(getString(R.string.btn_confirm)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+
+                dialogBuilder.show()
+            }
+        }
+    }
+
+    private fun calculateNextReminderTime(medicine: Medicine, currentTime: Long): Long {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = currentTime
+
+        val reminderCalendar = Calendar.getInstance()
+        reminderCalendar.timeInMillis = medicine.startDate
+        reminderCalendar.set(Calendar.HOUR_OF_DAY, medicine.timeHour)
+        reminderCalendar.set(Calendar.MINUTE, medicine.timeMinute)
+        reminderCalendar.set(Calendar.SECOND, 0)
+        reminderCalendar.set(Calendar.MILLISECOND, 0)
+
+        // 如果提醒时间已过，计算下一次提醒时间
+        while (reminderCalendar.timeInMillis <= currentTime) {
+            when (medicine.cycleType) {
+                CycleType.DAILY -> reminderCalendar.add(Calendar.DAY_OF_YEAR, 1)
+                CycleType.WEEKLY -> reminderCalendar.add(Calendar.WEEK_OF_YEAR, 1)
+                CycleType.MONTHLY -> reminderCalendar.add(Calendar.MONTH, 1)
+                CycleType.YEARLY -> reminderCalendar.add(Calendar.YEAR, 1)
+            }
+        }
+
+        return reminderCalendar.timeInMillis
+    }
+
+    private fun showMedicineConfirmDialog(medicine: Medicine) {
+        val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(getString(R.string.dialog_title_medicine_confirm))
+            .setMessage(getString(R.string.dialog_message_medicine_confirm, medicine.name, medicine.dosage))
+            .setPositiveButton(getString(R.string.had_medicine)) { dialog, _ ->
+                // 记录服药历史
+                CoroutineScope(Dispatchers.IO).launch {
+                    val record = MedicineRecord(
+                        medicineId = medicine.id,
+                        medicineName = medicine.name,
+                        takeTime = System.currentTimeMillis(),
+                        isCompleted = true
+                    )
+                    db.recordDao().insertRecord(record)
+                }
+                Toast.makeText(this, getString(R.string.toast_medicine_taken_record_added), Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.btn_cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+
+        dialogBuilder.show()
     }
 
     override fun onRequestPermissionsResult(
@@ -206,6 +372,17 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    // 务必添加页面统计
+    override fun onResume() {
+        super.onResume()
+        StatService.onResume(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        StatService.onPause(this)
     }
 }
 

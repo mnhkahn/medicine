@@ -67,8 +67,8 @@ object NotificationHelper {
         // 5. 构建通知（核心：setOngoing(true) 禁止滑动清除）
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_lock_lock) // 系统自带图标，避免资源缺失
-            .setContentTitle("💊 该吃药了：$medName")
-            .setContentText("剂量：$medDosage")
+            .setContentTitle(context.getString(R.string.need_have_medicine)+":"+medName)
+            .setContentText(context.getString(R.string.item_count)+":"+medDosage)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setContentIntent(openAppPendingIntent)
@@ -77,8 +77,8 @@ object NotificationHelper {
             .setSound(android.provider.Settings.System.DEFAULT_ALARM_ALERT_URI) // 闹钟铃声
             .setVibrate(longArrayOf(0, 500, 200, 500)) // 震动
             // 添加动作按钮
-            .addAction(android.R.drawable.ic_menu_add, "✅ 已服药", takePendingIntent)
-            .addAction(android.R.drawable.ic_menu_recent_history, "⏰ 15分钟后提醒", laterPendingIntent)
+            .addAction(android.R.drawable.ic_menu_add, context.getString(R.string.had_medicine), takePendingIntent)
+            .addAction(android.R.drawable.ic_menu_recent_history, context.getString(R.string.remind_latar), laterPendingIntent)
             .build()
 
         // 6. 发送通知
