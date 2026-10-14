@@ -17,7 +17,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.baidu.mobstat.StatService
 import com.cyeam.medicine.R
 import com.cyeam.medicine.data.CycleType
 import com.cyeam.medicine.data.Medicine
@@ -85,9 +84,6 @@ class MainActivity : AppCompatActivity() {
 
         AlarmHelper.initAllAlarms(this)
 
-        StatService.setDebugOn(true);
-        // 启动统计
-        StatService.autoTrace(this);
         Log.i(TAG, "===== MainActivity 启动完成 =====")
     }
 
@@ -374,16 +370,6 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    // 务必添加页面统计
-    override fun onResume() {
-        super.onResume()
-        StatService.onResume(this)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        StatService.onPause(this)
-    }
 }
 
 // ViewModel
@@ -401,4 +387,3 @@ class MedicineViewModelFactory(private val db: MedicineDatabase) : ViewModelProv
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
-

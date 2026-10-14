@@ -6,6 +6,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.kapt")
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -23,7 +25,6 @@ android {
     val storePassword = localProperties.getProperty("signing.storePassword")
     val keyAlias = localProperties.getProperty("signing.keyAlias")
     val keyPassword = localProperties.getProperty("signing.keyPassword")
-    var baiduMTJKey = localProperties.getProperty("baidu.mtj.app.key")
 
     defaultConfig {
         applicationId = "com.cyeam.medicine"
@@ -45,7 +46,6 @@ android {
             }
         }
 
-        manifestPlaceholders["BAIDU_MTJ_APP_KEY"] = baiduMTJKey
     }
 
     signingConfigs {
@@ -85,13 +85,16 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+
     // 基础库
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.activity:activity-ktx:1.8.2")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation(files("libs/Baidu_Mtj_android_4.0.11.0.jar"))
 
     // Room 数据库
     val roomVersion = "2.4.0"
