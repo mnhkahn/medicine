@@ -19,19 +19,20 @@ android {
     val localPropertiesFile = rootProject.file("local.properties")
     if (localPropertiesFile.exists()) {
         // 3. 简化FileInputStream引用（核心修复点：去掉java.io.前缀）
-        localProperties.load(FileInputStream(localPropertiesFile))
+        FileInputStream(localPropertiesFile).use { localProperties.load(it) }
     }
-    val storeFile = localProperties.getProperty("signing.storeFile")
-    val storePassword = localProperties.getProperty("signing.storePassword")
-    val keyAlias = localProperties.getProperty("signing.keyAlias")
-    val keyPassword = localProperties.getProperty("signing.keyPassword")
+    val storeFile = System.getenv("KEYSTORE_FILE") ?: localProperties.getProperty("signing.storeFile")
+    val storePassword = System.getenv("KEYSTORE_PASSWORD") ?: localProperties.getProperty("signing.storePassword")
+    val keyAlias = System.getenv("KEY_ALIAS") ?: localProperties.getProperty("signing.keyAlias")
+    val keyPassword = System.getenv("KEY_PASSWORD") ?: localProperties.getProperty("signing.keyPassword")
 
     defaultConfig {
         applicationId = "com.cyeam.medicine"
         minSdk = 26
         targetSdk = 34
-        versionCode = 2
-        versionName = "v1.0.1"
+        versionCode = providers.gradleProperty("releaseVersionCode").orNull?.toInt() ?: 2
+        versionName = providers.gradleProperty("releaseVersionName").orNull ?: "v1.0.1"
+        buildConfigField("String", "APP_UPDATE_URL", "\"https://www.cyeam.com/api/apps/yaobunengting/update\"")
 
         androidResources {
             generateLocaleConfig = true
@@ -81,6 +82,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -102,6 +104,8 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
 
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+
     // ViewModel & LiveData
     val lifecycleVersion = "2.6.1"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
@@ -112,6 +116,7 @@ dependencies {
 
     // 测试库
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.json:json:20240303")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }

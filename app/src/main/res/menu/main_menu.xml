@@ -3,4 +3,5 @@
     <item
         android:id="@+id/menu_history"
         android:title="服药历史"/>
+    <item android:id="@+id/menu_update" android:title="@string/check_for_updates" />
 </menu>

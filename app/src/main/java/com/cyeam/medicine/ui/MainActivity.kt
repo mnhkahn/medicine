@@ -10,6 +10,13 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.cyeam.medicine.update.AppUpdateViewModel
+import com.cyeam.medicine.update.UpdateStage
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -33,6 +40,15 @@ import java.util.Date
 class MainActivity : AppCompatActivity() {
     private val PERMISSION_REQUEST_CODE = 1001
     private val TAG = "MainActivity_TAG"
+
+    private val updater by lazy { ViewModelProvider(this)[AppUpdateViewModel::class.java] }
+    private var updateDialog: AlertDialog? = null
+    private var promptedUpdateId = -1L
+    private val installPermission = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (packageManager.canRequestPackageInstalls() && updater.state.value.stage == UpdateStage.READY) {
+            launchUpdateInstaller()
+        }
+    }
 
     private val db by lazy { MedicineDatabase.getDatabase(this) }
     private lateinit var viewModel: MedicineViewModel
@@ -80,6 +96,19 @@ class MainActivity : AppCompatActivity() {
 
         fab.setOnClickListener {
             showAddMedicineDialog()
+        }
+
+        promptedUpdateId = savedInstanceState?.getLong("promptedUpdateId", -1L) ?: -1L
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                updater.state.collect { state ->
+                    if (state.stage == UpdateStage.READY && promptedUpdateId != state.id) {
+                        promptedUpdateId = state.id
+                        showUpdateDialog()
+                    }
+                    renderUpdateDialog()
+                }
+            }
         }
 
         AlarmHelper.initAllAlarms(this)
@@ -363,11 +392,76 @@ class MainActivity : AppCompatActivity() {
 
     // 点击菜单跳转历史页面
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
+        if (item.itemId == R.id.menu_update) {
+            showUpdateDialog()
+            if (updater.state.value.stage == UpdateStage.IDLE || updater.state.value.stage == UpdateStage.FAILED) {
+                updater.checkForUpdate()
+            }
+            return true
+        }
         if (item.itemId == R.id.menu_history) {
             startActivity(android.content.Intent(this, MedicineHistoryActivity::class.java))
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showUpdateDialog() {
+        if (updateDialog?.isShowing == true) return
+        updateDialog = AlertDialog.Builder(this)
+            .setTitle("应用更新")
+            .setMessage("正在检查更新…")
+            .setPositiveButton("检查更新", null)
+            .setNegativeButton("稍后", null)
+            .create().also { dialog ->
+                updateDialog = dialog
+                dialog.setOnDismissListener { updateDialog = null }
+                dialog.show()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                    if (updater.state.value.stage == UpdateStage.READY) {
+                        if (packageManager.canRequestPackageInstalls()) launchUpdateInstaller()
+                        else runCatching {
+                            installPermission.launch(Intent(
+                                android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                                android.net.Uri.parse("package:$packageName")
+                            ))
+                        }.onFailure { Toast.makeText(this, "无法打开安装权限设置", Toast.LENGTH_LONG).show() }
+                    } else updater.checkForUpdate()
+                }
+                renderUpdateDialog()
+            }
+    }
+
+    private fun renderUpdateDialog() {
+        val dialog = updateDialog ?: return
+        val state = updater.state.value
+        dialog.setTitle(if (state.version.isBlank()) "应用更新" else "更新至 ${state.version}")
+        val progress = if (state.stage == UpdateStage.DOWNLOADING) "\n${(state.progress * 100).toInt()}%" else ""
+        val installHint = if (state.stage == UpdateStage.READY) "\n首次安装需允许安装未知应用，安装由系统确认。" else ""
+        dialog.setMessage(listOf(state.notes, state.message + progress + installHint).filter { it.isNotBlank() }.joinToString("\n\n"))
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.apply {
+            text = when (state.stage) {
+                UpdateStage.READY -> "安装更新"
+                UpdateStage.FAILED -> "重试"
+                else -> "检查更新"
+            }
+            isEnabled = state.stage != UpdateStage.CHECKING && state.stage != UpdateStage.DOWNLOADING
+        }
+    }
+
+    private fun launchUpdateInstaller() {
+        runCatching { startActivity(updater.installIntent()) }
+            .onFailure { Toast.makeText(this, "无法打开系统安装器，请重试", Toast.LENGTH_LONG).show() }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putLong("promptedUpdateId", promptedUpdateId)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onDestroy() {
+        updateDialog?.dismiss()
+        super.onDestroy()
     }
 
 }

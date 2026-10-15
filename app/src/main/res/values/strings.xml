@@ -53,4 +53,5 @@
     <!-- 服药历史 -->
     <string name="history_status_taken">已服药</string>
     <string name="history_status_not_taken">未服药</string>
+    <string name="check_for_updates">检查更新</string>
 </resources>
